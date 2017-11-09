@@ -1,8 +1,3 @@
-
-// This is a skeleton file for use in creating your own plugin
-// libraries.  Replace MyPlugin and myPlugin throughout with the name
-// of your first plugin class, and fill in the gaps as appropriate.
-
 //include header file, where class and member delcarations happen
 #include "FindSilence.h"
 #include <math.h>
@@ -252,6 +247,9 @@ FindSilence::process(const float *const *inputBuffers, Vamp::RealTime timestamp)
     float sumOfSquares = 0.0f;
     int overThreshold = 0;
 
+    
+    //We use current_timestamp as a Vamp::RealTime object to return timestamp so it can be output, 
+    //and current_time as a float representation of that object (to be used in conjunction with the sensitivity parameter)
     Vamp::RealTime current_timestamp = timestamp - Vamp::RealTime::frame2RealTime(m_stepSize, lrintf(m_inputSampleRate));
     float current_time = (float)current_timestamp.sec + ((float)current_timestamp.nsec)/1e09;
 
@@ -276,7 +274,6 @@ FindSilence::process(const float *const *inputBuffers, Vamp::RealTime timestamp)
     if ((overThreshold != prevOverThreshold) && (current_time - time_of_last_feature) > sensitivity)
     {
       f.timestamp = current_timestamp;
-      //f.values.push_back((float)current_timestamp.sec + (float)current_timestamp.nsec/1e09);
       fs1[0].push_back(f);
       time_of_last_feature = current_time;
     }
